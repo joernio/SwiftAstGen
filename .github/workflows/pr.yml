@@ -31,12 +31,14 @@ jobs:
         run: |
           swift build
           mv ./.build/debug/SwiftAstGen SwiftAstGen-linux
+          gzexe SwiftAstGen-linux
           ./SwiftAstGen-linux -s
       - name: Run Mac Build
         if: matrix.os == 'macos-latest'
         run: |
           swift build
           mv ./.build/debug/SwiftAstGen SwiftAstGen-mac
+          gzexe SwiftAstGen-mac
           ./SwiftAstGen-mac -s
       - name: Run Windows Build
         if: matrix.os == 'windows-latest'
@@ -44,6 +46,14 @@ jobs:
           swift build
           mv .\.build\debug\SwiftAstGen.exe SwiftAstGen-win.exe
           .\SwiftAstGen-win.exe -s
+      - name: Run UPX for Windows Build
+        if: matrix.os == 'windows-latest'
+        uses: crazy-max/ghaction-upx@v3
+        with:
+          version: latest
+          files: |
+            SwiftAstGen-win.exe
+          args: -fq
       - name: Run Swift Tests
         run: swift test
       - name: Set up JDK
