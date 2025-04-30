@@ -10,10 +10,6 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Install older glibc
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          sudo apt-get install libc6=2.31-0ubuntu9.16 libgcc-s1=10.5.0-1ubuntu1~20.04
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -25,11 +21,12 @@ jobs:
         with:
           check-latest: true
           development: true
-          swift-version: "5.10"
+          swift-version: "6.1"
       - name: Run Linux Build
         if: matrix.os == 'ubuntu-latest'
         run: |
-          swift build
+          swift sdk install https://download.swift.org/swift-6.1-branch/static-sdk/swift-6.1-DEVELOPMENT-SNAPSHOT-2025-03-25-a/swift-6.1-DEVELOPMENT-SNAPSHOT-2025-03-25-a_static-linux-0.0.1.artifactbundle.tar.gz --checksum 2b73c30ec402f443857e6cd2ac06b8525f186e889a7a727af05601629148fe6a
+          swift build --swift-sdk x86_64-swift-linux-musl
           mv ./.build/debug/SwiftAstGen SwiftAstGen-linux
           gzexe SwiftAstGen-linux
           ./SwiftAstGen-linux -s
