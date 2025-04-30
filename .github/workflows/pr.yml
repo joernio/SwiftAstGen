@@ -13,7 +13,7 @@ jobs:
       - name: Install older glibc
         if: matrix.os == 'ubuntu-latest'
         run: |
-          sudo apt-get install libc-bin=2.31-0ubuntu9.17 libc6=2.31-0ubuntu9.17
+          sudo apt-get install glibc-tools=2.31-0ubuntu9.17 libc6-dev=2.31-0ubuntu9.17
       - name: Checkout
         uses: actions/checkout@v4
         with:
