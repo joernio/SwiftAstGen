@@ -15,8 +15,7 @@ jobs:
         with:
           fetch-depth: '0'
       - name: Install sbt
-        if: matrix.os == 'macos-latest'
-        run: brew install sbt
+        uses: sbt/setup-sbt@v1
       - name: Install Swift
         uses: SwiftyLab/setup-swift@latest
         with:
