@@ -29,13 +29,15 @@ public class SwiftAstGenerator {
 			|| nameLowercased.contains("/spec/")
 	}
 
-	private func writeStringToFileAsync(string: String, toFilePath filePath: String) {
-	    DispatchQueue.global(qos: .background).async {
-	        do {
-	            let data = Data(string.utf8)
-	            let fileURL = URL(fileURLWithPath: filePath)
-	            try data.write(to: fileURL, options: .atomic)
-	        } catch {}
+	private func writeStringToFileAsync(string: String, fileUrl: URL) {
+	    DispatchQueue.global(qos: .background).sync {
+            do {
+            	try string.write(
+					to: fileUrl,
+					atomically: true,
+					encoding: String.Encoding.utf8
+				)
+			} catch {}
         }
 	}
 
@@ -61,7 +63,11 @@ public class SwiftAstGenerator {
 				)
 			}
 
-			writeStringToFileAsync(string: astJsonString, toFilePath: outFileUrl.path)
+			try astJsonString.write(
+				to: outFileUrl,
+				atomically: true,
+				encoding: String.Encoding.utf8
+			)
 	        print("Generated AST for file: `\(fileUrl.path)`")
 		} catch {
 			print("Parsing failed for file: `\(fileUrl.path)` (\(error))")
