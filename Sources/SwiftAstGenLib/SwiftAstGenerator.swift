@@ -29,18 +29,6 @@ public class SwiftAstGenerator {
 			|| nameLowercased.contains("/spec/")
 	}
 
-	private func writeStringToFileAsync(string: String, fileUrl: URL) {
-	    DispatchQueue.global(qos: .background).sync {
-            do {
-            	try string.write(
-					to: fileUrl,
-					atomically: true,
-					encoding: String.Encoding.utf8
-				)
-			} catch {}
-        }
-	}
-
 	private func parseFile(fileUrl: URL) {
 		do {
 			let relativeFilePath = fileUrl.relativePath(from: srcDir)!
