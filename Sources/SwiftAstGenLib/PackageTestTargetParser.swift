@@ -67,7 +67,6 @@ public class PackageTestTargetParser {
         let packageSwiftUrl = srcDir.appendingPathComponent("Package.swift")
 
         guard FileManager.default.fileExists(atPath: packageSwiftUrl.path) else {
-            print("Package.swift not found at: \(packageSwiftUrl.path)")
             return []
         }
 
@@ -75,7 +74,6 @@ public class PackageTestTargetParser {
             let content = try String(contentsOf: packageSwiftUrl, encoding: .utf8)
             return parseTestTargets(from: content)
         } catch {
-            print("Failed to read Package.swift: \(error)")
             return []
         }
     }
